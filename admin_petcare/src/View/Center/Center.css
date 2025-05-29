@@ -1,0 +1,247 @@
+body {
+  background-color: #f8f9fa;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.center-detail-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.center-card {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  flex-wrap: wrap;
+}
+
+/* --- Cột Trái --- */
+.center-left {
+  flex: 1 1 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 300px;
+}
+
+.center-image-wrapper {
+  background-color: #eef1f4;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.center-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.center-info {
+  padding: 10px;
+}
+
+.center-info h2 {
+  color: #343a40;
+  font-size: 28px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #007bff;
+  text-align: left;
+}
+
+.center-info p {
+  font-size: 16px;
+  color: #495057;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.center-info p i.fas {
+  margin-right: 12px;
+  color: #007bff;
+  width: 20px;
+  text-align: center;
+}
+
+.edit-button {
+  margin-top: 25px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.edit-button .fas {
+  color: white;
+}
+
+/* --- Cột Phải --- */
+.center-right {
+  flex: 1 1 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 320px;
+}
+
+.map-view-wrapper {
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #e9ecef;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style cho thông báo nếu không có dữ liệu bản đồ (bên trong wrapper) */
+.map-view-wrapper .no-map-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.center-description {
+  margin-top: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #495057;
+  background-color: #f8f9fa;
+  padding: 18px;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+}
+
+.center-description i.fas {
+  margin-right: 10px;
+  color: #28a745;
+}
+
+.center-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.action-button {
+  flex-grow: 1;
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.action-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.action-button .fas {
+  color: white;
+}
+
+/* Thông báo */
+.loading-message,
+.error-message,
+.no-data {
+  text-align: center;
+  font-size: 18px;
+  margin: 50px auto;
+  padding: 25px;
+  border-radius: 8px;
+  max-width: 600px;
+}
+
+.loading-message {
+  color: #007bff;
+  background-color: #e7f3ff;
+  border: 1px solid #b8d6fb;
+}
+
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.no-data {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+}
+
+/* Z-index cho Leaflet controls */
+.leaflet-control-container {
+  z-index: 1000 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .center-card {
+    flex-direction: column;
+    gap: 25px;
+  }
+  .center-left,
+  .center-right {
+    flex-basis: 100%;
+  }
+  .map-view-wrapper {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .center-info h2 {
+    font-size: 24px;
+  }
+  .edit-button,
+  .action-button {
+    padding: 10px 18px;
+    font-size: 15px;
+  }
+  .center-actions {
+    flex-direction: column;
+  }
+  .map-view-wrapper {
+    height: 250px;
+  }
+}

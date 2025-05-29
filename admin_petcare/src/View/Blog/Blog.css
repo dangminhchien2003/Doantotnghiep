@@ -1,0 +1,184 @@
+.Blog-content-section {
+    min-height: 100vh; 
+    margin-top: 80px;
+    box-sizing: border-box; 
+    display: flex;
+    flex-direction: column;
+  }
+#BlogTable {
+    margin-top: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 14px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #34495e;
+    color: #ecf0f1;
+    font-weight: normal;
+    font-size: 18px;
+  }
+  
+  button.Blog-edit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  button.Blog-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  button.Blog-edit:hover {
+    background-color: #2980b9;
+  }
+  
+  button.Blog-delete:hover {
+    background-color: #c0392b;
+  }
+  /* Nút thêm */
+.Blog-floating-btn {
+  background-color: #3498db; 
+  color: #fff; 
+  border: none;
+  padding: 15px; 
+  font-size: 30px; 
+  border-radius: 50%; 
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px; 
+  right: 30px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transition: background-color 0.3s; 
+  width: 60px; 
+  height: 60px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.Blog-floating-btn:hover {
+  background-color: #2980b9; 
+}
+/* CSS cho header-section */
+.Blog-header-section {
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* CSS cho tiêu đề */
+.Blog-header-section h2 {
+  position: absolute;
+  left: 0; /* Căn trái tiêu đề */
+  margin: 0;
+}
+
+/* CSS cho thanh tìm kiếm */
+.Blog-search-container {
+  position: relative;
+  width: 500px;
+}
+
+.Blog-search-icon {
+  position: absolute;
+  top: 40%;
+  right: 10px; /* Đặt icon ở bên phải */
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-size: 18px;
+}
+
+.Blog-search-input {
+  width: 100%;
+  padding: 10px 40px 10px 10px; /* Thêm khoảng trống bên phải cho icon */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 18px;
+  transition: border-color 0.3s ease;
+}
+
+.Blog-search-input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+/* --- Vùng phân trang --- */
+.blog-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  padding: 10px 0;
+  gap: 20px; 
+}
+
+/* --- Nút điều hướng Previous/Next (chứa icon) --- */
+.blog-page-nav {
+  background-color: transparent; 
+  border: none;              
+  color: #aaa;               
+  font-size: 14px;            
+  cursor: pointer;
+  padding: 6px;               
+  transition: color 0.2s ease-in-out;
+  line-height: 1;
+}
+
+.blog-page-nav:hover:not(:disabled) {
+  color: #555;
+}
+
+.blog-page-nav:disabled {
+  color: #ddd;    
+  cursor: not-allowed;
+}
+
+/* --- Hiển thị số trang hiện tại (hình tròn) --- */
+.blog-page-current {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px; 
+  height: 35px;
+  background-color: #007bff;
+  color: white;             
+  font-size: 16px;       
+  font-weight: bold;
+  border-radius: 10%;       
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+.blog-toggle-description-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+.blog-toggle-description-btn:hover {
+  text-decoration: underline;
+}

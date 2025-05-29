@@ -1,0 +1,174 @@
+.prescription-modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 16px;
+  width: 500px;
+  max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+  margin-top: 70px;
+}
+
+.prescription-item {
+  margin-bottom: 16px;
+}
+
+.prescription-item select {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.prescription-subrow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prescription-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.prescription-inputs input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  height: 40px;
+}
+
+.delete-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-actions button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #0056b3;
+}
+
+.modal-actions button:last-child {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #5a6268;
+}
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-button:hover {
+  color: #dc3545;
+}
+/* them thuốc */
+.prescription-addmedicine-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 5px;
+}
+
+.prescription-addmedicine-button:hover {
+  background-color: #218838;
+}
+/* ô chọn thuốc */
+.prescription-item select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  height: 40px;
+  background-color: #fff;
+  margin-bottom: 8px;
+}
+/* thông báo lỗi */
+.message {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #dc3545; /* đỏ cho lỗi */
+}
+/* AddPrescription.css */
+
+/* ... (các style hiện có của bạn) ... */
+
+/* Style cho ô ghi chú */
+.addpre-ghichu {
+  width: 100%;                      /* Chiếm toàn bộ chiều rộng của container cha */
+  min-height: 80px;                 /* Chiều cao tối thiểu, người dùng có thể kéo dài hơn */
+  padding: 10px;                    /* Khoảng đệm bên trong */
+  border: 1px solid #ccc;           /* Viền giống các input khác */
+  border-radius: 6px;               /* Bo góc giống các input khác */
+  font-size: 14px;                  /* Cỡ chữ */
+  font-family: inherit;             /* Sử dụng font chữ mặc định của trang */
+  line-height: 1.5;                 /* Chiều cao dòng cho dễ đọc */
+  margin-top: 16px;                 /* Khoảng cách phía trên, sau nút "Thêm thuốc" */
+  margin-bottom: 16px;              /* Khoảng cách phía dưới, trước thông báo lỗi hoặc các nút action */
+  box-sizing: border-box;           /* Đảm bảo padding và border không làm tăng kích thước tổng thể */
+  resize: vertical;                 /* Cho phép người dùng thay đổi kích thước theo chiều dọc */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Hiệu ứng chuyển đổi nhẹ nhàng */
+}
+
+.addpre-ghichu:focus {
+  border-color: #007bff;            /* Màu viền khi focus, giống với màu primary */
+  outline: none;                    /* Bỏ outline mặc định */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Thêm hiệu ứng shadow nhẹ khi focus */
+}
+
+.addpre-ghichu::placeholder {
+  color: #888;                     /* Màu cho placeholder text */
+}
+

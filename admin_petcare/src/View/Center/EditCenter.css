@@ -1,0 +1,112 @@
+.editcenter-modal {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  z-index: 999;
+}
+
+.editcenter-modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.editcenter-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.editcenter-title {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.editcenter-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.editcenter-label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+.editcenter-input {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.editcenter-input:read-only {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.editcenter-submit-btn {
+  margin-top: 20px;
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.editcenter-submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.editcenter-image-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.editcenter-image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 8px;
+}
+
+/* Responsive tối ưu cho mobile */
+@media (max-width: 480px) {
+  .editcenter-modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .editcenter-input {
+    font-size: 13px;
+  }
+
+  .editcenter-submit-btn {
+    font-size: 14px;
+  }
+}

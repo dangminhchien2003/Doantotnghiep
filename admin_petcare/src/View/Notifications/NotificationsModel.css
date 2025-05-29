@@ -1,0 +1,85 @@
+/* Các styles chung của Popover */
+.notifications-model-paper {
+  width: 500px;
+  max-height: 600px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  background-color: #f5f5f5; /* Thêm màu nền mặc định cho Popover */
+}
+
+/* Styles cho Box loading */
+.notifications-loading-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+/* Styles cho tin nhắn "không có thông báo" */
+.notifications-no-data {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+}
+
+/* Styles cho tiêu đề thông báo */
+.notifications-list-item-primary {
+  font-weight: bold;
+}
+
+/* Styles cho nội dung thông báo phụ */
+.notifications-list-item-secondary {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* --- Styles cho Item thông báo --- */
+
+/* Base style cho mỗi item thông báo */
+.notifications-list-item {
+  position: relative; /* Quan trọng để đặt dấu chấm */
+  padding-left: 20px; /* Tạo không gian cho dấu chấm */
+  margin-bottom: 5px; /* Khoảng cách giữa các thông báo */
+  border-radius: 4px; /* Bo góc nhẹ */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+/* Màu nền khi thông báo CHƯA ĐỌC */
+.notifications-list-item.unread {
+  background-color: #e3f2fd; /* Màu xanh nhạt dễ nhận biết */
+}
+
+/* Màu nền khi thông báo ĐÃ ĐỌC */
+.notifications-list-item.read {
+  background-color: #ffffff; /* Màu trắng cho thông báo đã đọc */
+}
+
+/* Màu nền khi hover */
+.notifications-list-item:hover {
+  background-color: #e0e0e0; /* Màu xám nhạt khi di chuột qua */
+  cursor: pointer;
+}
+
+/* Màu nền khi được click (active/selected) */
+.notifications-list-item.active {
+  background-color: #f0f0f0 !important; /* Màu trắng hơi xám khi được chọn, dùng !important nếu cần */
+}
+
+/* Style cho dấu chấm */
+.notifications-list-item::before {
+  content: ''; /* Tạo nội dung giả cho dấu chấm */
+  position: absolute;
+  left: 8px; /* Vị trí dấu chấm */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px; /* Kích thước dấu chấm */
+  height: 8px; /* Kích thước dấu chấm */
+  border-radius: 50%; /* Làm cho nó tròn */
+  background-color: transparent; /* Mặc định trong suốt */
+}
+
+/* Màu của dấu chấm khi CHƯA ĐỌC */
+.notifications-list-item.unread::before {
+  background-color: #2196f3; /* Màu xanh dương cho dấu chấm chưa đọc */
+}

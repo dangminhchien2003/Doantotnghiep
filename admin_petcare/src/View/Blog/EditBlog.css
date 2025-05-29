@@ -1,0 +1,146 @@
+/* Định dạng chung cho modal */
+.editblog-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Nội dung modal */
+.editblog-modal-content {
+  background-color: #fff;
+  padding: 20px 25px;
+  border-radius: 8px;
+  width: 600px;
+  max-width: 95%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  margin-top: 60px;
+}
+
+/* Nút đóng */
+.editblog-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.editblog-close-btn:hover {
+  color: #f00;
+}
+
+/* Tiêu đề */
+.editblog-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Bố cục form thành 1 cột */
+.editblog-form-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Sử dụng 1 cột duy nhất */
+  gap: 20px; /* Tăng khoảng cách giữa các trường */
+}
+
+/* Các trường nhập */
+.editblog-blog-title,
+.editblog-blog-content,
+.editblog-blog-image {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label cho các trường nhập */
+.editblog-blog-title label,
+.editblog-blog-content label,
+.editblog-blog-image label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+  font-weight: bold;
+}
+
+/* Input cho các trường */
+.editblog-blog-title input,
+.editblog-blog-content textarea,
+.editblog-blog-image input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editblog-blog-title input:focus,
+.editblog-blog-content textarea:focus,
+.editblog-blog-image input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Textarea */
+.editblog-blog-content textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Nút submit */
+.editblog-form-button {
+  display: flex;
+  justify-content: center;
+  grid-column: span 1;
+}
+
+.editblog-form-button button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.editblog-form-button button:hover {
+  background-color: #0056b3;
+}
+
+/* Hiệu ứng fadeIn */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Thêm CSS cho preview hình ảnh */
+.editblog-image-preview {
+  margin-top: 5px;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.editblog-image-preview-img {
+  max-width: 100%;
+  height: 100px;
+  border-radius: 8px;
+}

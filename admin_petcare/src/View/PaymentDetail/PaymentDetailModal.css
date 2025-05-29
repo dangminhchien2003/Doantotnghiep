@@ -1,0 +1,148 @@
+/* PaymentDetailModal.css */
+
+.payment-detail-modal-overlay {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Đảm bảo modal nổi lên trên */
+}
+
+.payment-detail-modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  /* width, maxHeight, overflowY được đặt inline trong component, 
+     nhưng bạn cũng có thể chuyển chúng vào đây nếu muốn */
+  /* Ví dụ:
+  width: 700px;
+  max-height: 80vh;
+  overflow-y: auto; 
+  */
+}
+
+.payment-detail-modal-content h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.payment-detail-modal-content h4 {
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.payment-detail-modal-content p {
+  margin: 8px 0;
+  line-height: 1.6;
+  color: #444;
+}
+
+.payment-detail-modal-content strong {
+  color: #222;
+}
+
+.payment-detail-modal-content hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+/* Style cho bảng chi tiết thanh toán */
+.payment-detail-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+.payment-detail-info-table th,
+.payment-detail-info-table td {
+  border: 1px solid #ddd;
+  padding: 10px; /* Tăng padding một chút */
+  text-align: left;
+}
+
+.payment-detail-info-table th {
+  background-color: #f7f7f7; /* Màu nền nhạt hơn một chút */
+  font-weight: 600; /* Đậm hơn */
+  color: #333;
+}
+
+/* Căn phải cho các cột số liệu */
+.payment-detail-info-table td:nth-child(2), /* Cột Giá (dịch vụ), Số Lượng (thuốc) */
+.payment-detail-info-table td:nth-child(3), /* Cột Đơn Giá (thuốc) */
+.payment-detail-info-table td:nth-child(4) { /* Cột Thành Tiền (thuốc) */
+  text-align: right;
+}
+
+.payment-detail-total-section p,
+.payment-detail-total-section h4 {
+  text-align: right;
+  margin: 10px 0;
+}
+
+.payment-detail-total-section h4 {
+  font-size: 1.3em;
+  color: #007bff; /* Màu cho tổng cộng cuối cùng */
+}
+
+.payment-detail-modal-actions {
+  margin-top: 25px;
+  text-align: right; /* Căn các nút sang phải */
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.payment-detail-modal-actions button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.payment-detail-button-confirm {
+  background-color: #28a745; /* Màu xanh lá cho nút xác nhận */
+  color: white;
+}
+
+.payment-detail-button-confirm:hover {
+  background-color: #218838;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.payment-detail-button-confirm:disabled {
+  background-color: #94d3a2;
+  cursor: not-allowed;
+}
+
+.payment-detail-button-close {
+  background-color: #6c757d; /* Màu xám cho nút đóng */
+  color: white;
+}
+
+.payment-detail-button-close:hover {
+  background-color: #5a6268;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.payment-detail-button-close:disabled {
+  background-color: #b0b5bA;
+  cursor: not-allowed;
+}

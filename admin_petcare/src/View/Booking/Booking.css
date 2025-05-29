@@ -1,0 +1,645 @@
+.booking-content-section {
+  min-height: 100vh;
+  margin-top: 70px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-filter-container {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+  padding: 15px;
+  align-items: center; /* Thêm để căn giữa items */
+}
+.date-filter-container label {
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.date-input {
+  padding: 5px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 150px;
+  height: 40px; /* Đồng bộ chiều cao với button */
+  box-sizing: border-box; /* Thêm để padding không ảnh hưởng width/height */
+}
+
+.search-button,
+.reload-button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  height: 40px;
+}
+
+.search-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.search-button:hover {
+  background-color: #45a049;
+}
+
+.reload-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.reload-button:hover {
+  background-color: #e53935;
+}
+
+.status-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  /* Cân nhắc thêm style cho container của tabs nếu cần, ví dụ:
+  border-bottom: 1px solid #ddd;
+  background-color: #f8f9fa; */
+}
+
+.status-tabs .status-tab {
+  /* Style này sẽ được áp dụng nếu bạn dùng class .status-tab trực tiếp.
+     Nếu dùng Material-UI Tabs, bạn cần target class của Material-UI như .MuiTab-root */
+  background-color: #18a71d; /* Sẽ bị ghi đè bởi Mui-selected hoặc hover */
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Thêm color transition */
+  color: white; /* Màu chữ mặc định cho tab này */
+}
+
+.status-tabs .status-tab:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.status-tabs .status-tab.Mui-selected {
+  /* Class cho tab được chọn của Material-UI */
+  background-color: #007bff;
+  color: white;
+  text-decoration: none !important;
+  border-bottom: 3px solid #0056b3; /* Hoặc một cách khác để chỉ thị tab active */
+}
+
+/* CSS này (.status-tab:hover) có thể không cần nếu .status-tabs .status-tab:hover ở trên đã đủ */
+/*
+.status-tab:hover {
+  background-color: #16a11d;
+}
+*/
+
+/* --- CÁC NÚT TEXT GỐC (GIỮ NGUYÊN NẾU DÙNG Ở NƠI KHÁC) --- */
+/* Lưu ý: Nếu các class này chỉ dùng cho các nút icon trong bảng,
+   thì các style này sẽ không còn tác dụng trực tiếp lên hình dạng nút icon nữa,
+   mà chỉ có tác dụng nếu bạn dùng chúng cho nút text ở đâu đó khác. */
+
+/* nút xác nhận (text) */
+.confirm-button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.confirm-button:hover {
+  background-color: #0069d9;
+}
+.confirm-button:active {
+  background-color: #0056b3;
+}
+
+/* nút hủy (text) */
+.cancel-button {
+  background-color: #dc3545;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px; /* Có thể cần điều chỉnh nếu trong flex container */
+  width: 105px;
+}
+.cancel-button:hover {
+  background-color: #c82333;
+}
+.cancel-button:active {
+  background-color: #bd2130;
+}
+
+/* nút thực hiện (text) */
+.perform-button {
+  background-color: #ffc107;
+  color: #212529; /* Chữ nên màu tối trên nền vàng */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.perform-button:hover {
+  background-color: #e0a800;
+}
+.perform-button:active {
+  background-color: #d39e00;
+}
+
+/* nút hoàn thành (text) */
+.complete-button {
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.complete-button:hover {
+  background-color: #218838;
+}
+.complete-button:active {
+  background-color: #1e7e34;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Đảm bảo modal ở trên cùng */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5); /* Thêm shadow cho modal */
+}
+
+.modal-content textarea {
+  /* Sửa lại selector cho đúng */
+  width: 100%;
+  min-height: 100px; /* Nên dùng min-height */
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Quan trọng */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between; /* Hoặc flex-end nếu muốn các nút về một phía */
+  margin-top: 15px; /* Thêm margin-top */
+}
+
+.button-modal-actions {
+  background-color: #5baf5d; /* Nên là màu xanh cho confirm */
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.button-modal-actions:disabled {
+  background-color: gray;
+  cursor: not-allowed; /* Thêm cursor */
+}
+
+.close-button {
+  /* Có thể bạn dùng class này cho nút đóng của modal hủy */
+  background-color: #ff4d4f; /* Màu đỏ cho close/cancel */
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.close-button:hover {
+  background-color: #ee0307;
+}
+
+/* Nút đơn thuốc (text) */
+.prescription-button,
+.add-prescription-button {
+  /* Nếu là nút text */
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+  font-size: 14px;
+  text-align: center;
+  margin-right: 8px;
+  margin-bottom: 5px;
+}
+.add-prescription-button {
+  /* Nếu là nút text */
+  background-color: #2196f3;
+}
+.prescription-button:hover {
+  /* Nếu là nút text */
+  background-color: #43a047;
+}
+.add-prescription-button:hover {
+  /* Nếu là nút text */
+  background-color: #1976d2;
+}
+
+/* --- BẮT ĐẦU PHẦN SỬA ĐỔI CHO ICON BUTTONS TRONG BẢNG --- */
+
+/* Style chung cho tất cả các nút icon trong bảng */
+/* Quan trọng: Trong JSX, các nút này cần có class chung là "icon-button"
+   VÀ class cụ thể của nó, ví dụ: className="confirm-button icon-button" */
+.booking-table .icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 3px;
+  cursor: pointer;
+  font-size: 1.2em; /* Kích thước của icon */
+  color: #555; /* Màu icon mặc định, sẽ được ghi đè */
+  border-radius: 50%; /* Nút tròn */
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  vertical-align: middle;
+}
+
+.booking-table .icon-button:hover {
+  background-color: #e9e9e9; /* Nền xám nhẹ khi hover */
+  transform: scale(1.1); /* Phóng to nhẹ */
+}
+
+.booking-table .icon-button:active {
+  transform: scale(0.95); /* Thu nhỏ khi nhấn */
+}
+
+.booking-table .icon-button:disabled {
+  color: #adb5bd !important;
+  background-color: transparent !important;
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
+}
+
+/* Container cho các nút icon trong một ô của bảng */
+.booking-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Hoặc flex-start để căn trái */
+  gap: 6px; /* Khoảng cách giữa các icon */
+  /* flex-direction: row; /* Đây là mặc định cho display: flex, không cần nếu bạn không ghi đè từ column */
+}
+
+/* Màu sắc cụ thể cho từng loại ICON button */
+/* Giả định các nút trong bảng giờ đây có cả class gốc VÀ class .icon-button */
+.booking-table .confirm-button.icon-button {
+  color: #28a745; /* Xanh lá */
+}
+.booking-table .confirm-button.icon-button:hover {
+  color: #1e7e34; /* Xanh lá đậm hơn */
+}
+
+.booking-table .cancel-button.icon-button {
+  color: #dc3545; /* Đỏ */
+}
+.booking-table .cancel-button.icon-button:hover {
+  color: #b02a37;
+}
+
+.booking-table .perform-button.icon-button {
+  color: #007bff; /* Xanh dương */
+}
+.booking-table .perform-button.icon-button:hover {
+  color: #0056b3;
+}
+
+.booking-table .complete-button.icon-button {
+  color: #28a745; /* Xanh lá */
+}
+.booking-table .complete-button.icon-button:hover {
+  color: #1e7e34;
+}
+
+.booking-table .prescription-button.icon-button {
+  /* Xem đơn */
+  color: #6f42c1; /* Tím */
+}
+.booking-table .prescription-button.icon-button:hover {
+  color: #59369a;
+}
+
+.booking-table .add-prescription-button.icon-button {
+  /* Thêm đơn */
+  color: #fd7e14; /* Cam */
+}
+.booking-table .add-prescription-button.icon-button:hover {
+  color: #c7640f;
+}
+
+.booking-table .pay-button.icon-button[aria-label="Tiến hành thanh toán"] {
+  color: #ffc107; /* Vàng */
+}
+.booking-table
+  .pay-button.icon-button[aria-label="Tiến hành thanh toán"]:hover {
+  color: #d39e00;
+}
+.booking-table .pay-button.icon-button[aria-label="Xác nhận thanh toán"] {
+  color: #17a2b8; /* Xanh ngọc */
+}
+.booking-table .pay-button.icon-button[aria-label="Xác nhận thanh toán"]:hover {
+  color: #117a8b;
+}
+
+.booking-table .remind-button.icon-button {
+  color: #6c757d; /* Xám */
+}
+.booking-table .remind-button.icon-button:hover {
+  color: #495057;
+}
+
+.booking-table .view-payment-button.icon-button {
+  color: #28a745; /* Xanh lá (ban đầu bạn để giống complete-button) */
+}
+.booking-table .view-payment-button.icon-button:hover {
+  color: #1e7e34;
+}
+
+.booking-table .view-reason-button.icon-button {
+  color: #6c757d; /* Xám */
+}
+.booking-table .view-reason-button.icon-button:hover {
+  color: #5a6268;
+}
+
+/* --- KẾT THÚC PHẦN SỬA ĐỔI CHO ICON BUTTONS --- */
+
+/* Các nút text bên ngoài bảng (nếu có) vẫn giữ style gốc của chúng */
+/* Ví dụ: .pay-button (text), .remind-button (text), .view-payment-button (text), .view-reason-button (text) */
+/* Các style này đã được cung cấp ở phần trên và không bị thay đổi bởi phần icon button */
+
+/* Nút Xác nhận thanh toán (Text - nếu vẫn dùng) */
+.pay-button {
+  /* Style này áp dụng nếu nút KHÔNG có class .icon-button */
+  background-color: #17a2b8;
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  width: 190px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pay-button:hover {
+  background-color: #138496;
+}
+.pay-button:active {
+  background-color: #117a8b;
+}
+
+/* Nút Nhắc nhở (Text - nếu vẫn dùng) */
+.remind-button {
+  /* Style này áp dụng nếu nút KHÔNG có class .icon-button */
+  padding: 10px 15px;
+  /* background-color sẽ cần được set nếu nó là nút text, ví dụ: background-color: #yourColor; */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  text-align: center;
+  white-space: nowrap;
+  width: 190px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.remind-button:hover {
+  opacity: 0.85;
+}
+
+/* nút xem thanh toán (Text - nếu vẫn dùng) */
+.view-payment-button {
+  /* Style này áp dụng nếu nút KHÔNG có class .icon-button */
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  width: 190px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.view-payment-button:hover {
+  background-color: #218838;
+}
+.view-payment-button:active {
+  background-color: #1e7e34;
+}
+
+/* model xem lý do hủy (Text - nếu vẫn dùng) */
+.view-reason-button {
+  /* Style này áp dụng nếu nút KHÔNG có class .icon-button */
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.view-reason-button:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .date-filter-container {
+    flex-direction: column;
+    align-items: stretch; /* Input và button sẽ full width */
+  }
+  .date-input,
+  .search-button,
+  .reload-button {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .search-button,
+  .reload-button {
+    margin-top: 10px;
+  }
+
+  .booking-table .icon-button {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1em;
+  }
+  .booking-actions {
+    gap: 4px;
+  }
+}
+
+/* model chi tiết lịch hẹn */
+.detailbooking-modal-overlay {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.detailbooking-modal-content {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: fadeInModal 0.3s ease-out;
+}
+
+/* Tiêu đề của modal chi tiết */
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  color: #333;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+/* Grid chứa thông tin chi tiết */
+.booking-detail-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 20px;
+  font-size: 0.95em;
+}
+
+.booking-detail-grid p {
+  margin: 0;
+  padding: 6px 0;
+  line-height: 1.6;
+  color: #555;
+}
+
+.booking-detail-grid p strong {
+  color: #1a5276;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+/* Khu vực chứa nút hành động */
+.modal-actions {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Nút đóng modal (cancel-close-button) */
+.cancel-close-button {
+  background-color: #6c757d; 
+  color: white;
+  border: none;
+  padding: 10px 20px; 
+  border-radius: 5px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.cancel-close-button:hover {
+  background-color: #5a6268;
+}
+
+.cancel-close-button:active {
+  transform: translateY(1px); 
+}
+/* TIÊU ĐỀ CHO CÁC PHẦN THÔNG TIN */
+.detailbooking-modal-content .booking-detail-section-title {
+  grid-column: 1 / -1; /* Giúp tiêu đề chiếm trọn chiều rộng của grid */
+  margin-top: 20px;    /* Khoảng cách phía trên tiêu đề phần */
+  margin-bottom: 12px; /* Khoảng cách phía dưới tiêu đề, trước các mục thông tin */
+  padding-bottom: 8px; /* Khoảng cách cho đường viền dưới */
+  font-size: 1.15em;   /* Kích thước font cho tiêu đề phần, nhỏ hơn H3 chính */
+  font-weight: 600;    /* Độ đậm */
+  color: #0056b3;      /* Màu sắc nổi bật cho tiêu đề phần (ví dụ: xanh dương đậm) */
+  border-bottom: 2px solid #007bff; /* Đường kẻ chân cho tiêu đề phần */
+  letter-spacing: 0.5px; /* Tăng nhẹ khoảng cách chữ */
+}
+
+/* Điều chỉnh margin cho tiêu đề phần ĐẦU TIÊN bên trong grid */
+.detailbooking-modal-content .booking-detail-grid .booking-detail-section-title:first-child {
+  margin-top: 10px; /* Giảm margin top cho phần đầu tiên để không quá xa tiêu đề chính của modal (H3) */
+}
+
+/* Tùy chỉnh thêm cho grid và các mục con nếu cần */
+.detailbooking-modal-content .booking-detail-grid {
+  /* display: grid; */ /* Đã có */
+  /* grid-template-columns: auto 1fr; */ /* Đã có */
+  /* gap: 8px 15px; */ /* Bạn có thể điều chỉnh lại gap nếu muốn */
+}
+
+.detailbooking-modal-content .booking-detail-grid p {
+  /* padding: 4px 0; */ /* Đã có, có thể tăng nhẹ nếu thấy quá sát sau khi có section title */
+  padding: 5px 0;
+  /* line-height: 1.5; */ /* Đã có */
+}
+
+.detailbooking-modal-content .booking-detail-grid p strong {
+  /* color: #1a5276; */ /* Đã có */
+  /* font-weight: 600; */ /* Đã có */
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591804418697",
+    "project_id": "bookingpetcare",
+    "storage_bucket": "bookingpetcare.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591804418697:android:66930957a1c8cb60e21458",
+        "android_client_info": {
+          "package_name": "com.example.booking_petcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc3uGzTixW1_xymiI8AQxmF-UiWFGjFLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

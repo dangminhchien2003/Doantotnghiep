@@ -1,0 +1,236 @@
+/* Existing styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  /* Thay đổi kích thước ở đây */
+  width: 800px; /* Tăng width mặc định lên */
+  max-width: 90%; /* Cho phép nó rộng tới 90% chiều rộng màn hình */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+/* Nếu bạn có class .prescription-detail-modal, bạn có thể thêm style vào đây để ghi đè */
+/*
+.prescription-detail-modal {
+    width: 800px;
+    max-width: 90%;
+}
+*/
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #444;
+  word-break: break-word;
+}
+
+/* Style for the Ghi chú area when editing */
+.modal-content textarea.edit-textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 15px;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.medicine-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.medicine-table h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Header màu xanh dương đậm */
+.medicine-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border: 1px solid #696969;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Dòng dữ liệu */
+.medicine-table td {
+  padding: 8px 12px;
+  border: 1px solid #696969;
+  color: #333;
+  vertical-align: top;
+}
+
+/* Dòng chẵn có màu nền nhạt */
+.medicine-table tr:nth-child(even) {
+  background-color: #e6f0ff;
+}
+
+/* Dòng lẻ */
+.medicine-table tr:nth-child(odd) {
+  background-color: #f8fbff;
+}
+
+/* Styles for input fields and select within the table in edit mode */
+.medicine-table.edit-mode td input[type="text"],
+.medicine-table.edit-mode td input[type="number"],
+.medicine-table.edit-mode td select.medicine-input {
+  /* Thêm select vào đây */
+  width: 100%;
+  padding: 4px 6px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: normal;
+  display: block;
+  background-color: #fff;
+}
+
+/* Add some hover effect to input/select borders in edit mode */
+.medicine-table.edit-mode td input[type="text"]:focus,
+.medicine-table.edit-mode td input[type="number"]:focus,
+.medicine-table.edit-mode td select.medicine-input:focus {
+  /* Thêm select vào đây */
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Style for readOnly input to indicate it's not editable */
+.medicine-table.edit-mode td input[readOnly] {
+  background-color: #e9ecef; /* Màu xám nhạt */
+  cursor: not-allowed; /* Biểu tượng cấm */
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #6c757d;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.modal-actions button:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.modal-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-actions .edit-button {
+  background-color: #007bff; /* Blue */
+}
+
+.modal-actions .edit-button:hover:not(:disabled) {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Save button (Lưu) */
+.modal-actions .save-button {
+  background-color: #28a745;
+}
+
+.modal-actions .save-button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.modal-actions .cancel-edit-button {
+  background-color: #dc3545;
+}
+
+.modal-actions .cancel-edit-button:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+/* Add medicine button */
+.add-item-button {
+  padding: 8px 12px;
+  margin-top: 10px;
+  background-color: #17a2b8; /* Teal */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.add-item-button:hover {
+  background-color: #138496;
+}
+
+/* Remove item button */
+.remove-item-button {
+  padding: 4px 8px;
+  background-color: #dc3545; /* Red */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.remove-item-button:hover {
+  background-color: #c82333;
+}
+
+p.error-message {
+  color: #dc3545;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.modal-content span {
+  color: #666;
+  font-style: italic;
+}
