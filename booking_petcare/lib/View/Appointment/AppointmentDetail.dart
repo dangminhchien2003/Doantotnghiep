@@ -1,7 +1,13 @@
+import 'package:booking_petcare/Controller/Appointment/AppointmentController.dart';
+import 'package:booking_petcare/Controller/Pets/PetsController.dart';
+import 'package:booking_petcare/Widgets/PetDetailBottomSheet/PetDetailBottomSheetContent.dart';
+import 'package:booking_petcare/Widgets/PrescriptionModalContentWidget/PrescriptionModalContentWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_petcare/Global/ColorHex.dart';
 import 'package:booking_petcare/Utils/utils.dart';
 import 'package:booking_petcare/Model/Appointment/AppointmentModel.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class AppointmentDetail extends StatelessWidget {
   final AppointmentModel appointment;
@@ -98,25 +104,43 @@ class AppointmentDetail extends StatelessWidget {
                     children: [
                       ElevatedButton.icon(
                         onPressed: () {
-                          // xử lý gọi trung tâm
+                          if (appointment.idthucung != null &&
+                              appointment.idthucung! != 0) {
+                            final PetsController petsController =
+                                Get.put(PetsController());
+
+                            petsController
+                                .fetchPetDetailsById(appointment.idthucung!);
+
+                            // Hiển thị BottomSheet
+                            Get.bottomSheet(
+                              PetDetailBottomSheetContent(
+                                  idthucung: appointment.idthucung!),
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              enterBottomSheetDuration:
+                                  const Duration(milliseconds: 250),
+                              exitBottomSheetDuration:
+                                  const Duration(milliseconds: 200),
+                            );
+                          } else {
+                            // Thông báo nếu không có ID thú cưng
+                            Utils.showSnackBar(
+                              title: "Thông báo",
+                              message:
+                                  "Lịch hẹn này không liên kết với thú cưng nào.",
+                              // isError: false // Hoặc true tùy bạn muốn
+                            );
+                          }
                         },
-                        icon: Icon(Icons.call),
-                        label: Text("Gọi"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 66, 165, 9),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                        icon: Icon(
+                          Icons.pets,
+                          color: Colors.white,
                         ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // xử lý xem thú cưng
-                        },
-                        icon: Icon(Icons.pets),
-                        label: Text("Thú cưng"),
+                        label: Text(
+                          "Thú cưng",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
                           padding: EdgeInsets.symmetric(
@@ -143,23 +167,43 @@ class AppointmentDetail extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12)),
                           ),
                         ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          // Get.to(() => ReBookScreen(appointment: appointment));
-                        },
-                        icon: Icon(Icons.replay, color: ColorHex.main),
-                        label: Text(
-                          "Đặt lại",
-                          style: TextStyle(color: ColorHex.main),
+                      // Điều kiện hiển thị nút "Đơn thuốc"
+                      if (status == 3 ||
+                          status == 5 ||
+                          status ==
+                              6) // Hoàn thành, Đã thanh toán, Đang thanh toán
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            final AppointmentController controller =
+                                Get.find<AppointmentController>();
+                            // Đảm bảo appointment.idlichhen là int
+                            controller.fetchPrescriptionDetails(
+                                appointment.idlichhen);
+
+                            Get.bottomSheet(
+                              PrescriptionModalContentWidget(
+                                  appointmentId: appointment.idlichhen),
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              enterBottomSheetDuration:
+                                  const Duration(milliseconds: 250),
+                              exitBottomSheetDuration:
+                                  const Duration(milliseconds: 200),
+                            );
+                          },
+                          icon: Icon(Icons.receipt_long, color: ColorHex.main),
+                          label: Text(
+                            "Đơn thuốc",
+                            style: TextStyle(color: ColorHex.main),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: ColorHex.main),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
                         ),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: ColorHex.main),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                      ),
                     ],
                   ),
                 ],

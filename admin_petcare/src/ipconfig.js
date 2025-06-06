@@ -1,3 +1,3 @@
-const url="http://192.168.2.251/api/Admin/"
+const url="http://192.168.171.66/api/Admin/"
 
 export default url

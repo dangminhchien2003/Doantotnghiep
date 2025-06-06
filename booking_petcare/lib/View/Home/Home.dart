@@ -250,7 +250,7 @@ class Home extends StatelessWidget {
                   children: const [
                     BannerWidget(imagePath: 'assets/images/banner.jpg'),
                     BannerWidget(imagePath: 'assets/images/banner1.jpg'),
-                    BannerWidget(imagePath: 'assets/images/banner2.jpg'),
+                    BannerWidget(imagePath: 'assets/images/banner4.jpg'),
                   ],
                 ),
               ),

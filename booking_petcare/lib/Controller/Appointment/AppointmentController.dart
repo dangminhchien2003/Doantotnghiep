@@ -12,7 +12,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+// ✅ BƯỚC 1: ĐỊNH NGHĨA CLASS TimeSlotDisplayInfo
+class TimeSlotDisplayInfo {
+  final TimeOfDay time;
+  final bool isBooked;
+  final bool isPast;
+
+  TimeSlotDisplayInfo({
+    required this.time,
+    this.isBooked = false,
+    this.isPast = false,
+  });
+
+  bool get isSelectable => !isBooked && !isPast;
+
+  @override
+  String toString() {
+    return 'TimeSlot(time: ${time.hour}:${time.minute}, booked: $isBooked, past: $isPast, selectable: $isSelectable)';
+  }
+}
+
 class AppointmentController extends GetxController {
+  // --- ID Trung tâm mặc định ---
+  final String defaultCenterId = "1";
+
   var appointments = <AppointmentModel>[].obs;
   var isLoadingAppointments = true.obs;
   List<AppointmentModel> allAppointments = [];
@@ -21,10 +44,11 @@ class AppointmentController extends GetxController {
 
   //Đặt lịch
   var selectedPet = ''.obs;
-  var selectedCenter = ''.obs;
+  // var selectedCenter = ''.obs;
   var selectedServiceIds = <int>[].obs;
   var selectedDate = DateTime.now().obs;
-  var selectedTime = TimeOfDay.now().obs;
+  // var selectedTime = TimeOfDay.now().obs;
+  var selectedTime = Rx<TimeOfDay?>(null);
 
   // Thông tin người dùng
   var userName = ''.obs;
@@ -35,11 +59,27 @@ class AppointmentController extends GetxController {
   var isLoadingPrescription = false.obs;
   var prescriptionError = Rxn<String>();
 
+  // --- Thêm các biến cho logic chọn giờ ---
+  // var availableTimeSlots = <TimeOfDay>[].obs;
+  var displayableTimeSlots = <TimeSlotDisplayInfo>[].obs;
+  var bookedStartTimesForSelectedDate = <TimeOfDay>[].obs;
+
+  final TimeOfDay openingTime = TimeOfDay(hour: 8, minute: 0); // 8 AM
+  final TimeOfDay closingTime = TimeOfDay(hour: 17, minute: 0); // 5 PM
+  final int slotIncrementInMinutes = 60; // Mỗi slot cách nhau 60 phút
+
   @override
   void onInit() {
     super.onInit();
     fetchAllAppointments();
     loadUserInfo();
+
+    // ✅ THÊM: Logic xử lý khi ngày thay đổi và tải slot lần đầu
+    ever(selectedDate, (_) {
+      selectedTime.value = null; // Reset giờ đã chọn khi đổi ngày
+      fetchAndGenerateAvailableSlots();
+    });
+    fetchAndGenerateAvailableSlots(); // Tải slot lần đầu cho ngày hiện tại
   }
 
   //lấy thông tin người dùng
@@ -48,6 +88,124 @@ class AppointmentController extends GetxController {
         await Utils.getStringValueWithKey(Constant.TEN_NGUOIDUNG) ?? '';
     phoneNumber.value = await Utils.getStringValueWithKey(Constant.SDT) ?? '';
     address.value = await Utils.getStringValueWithKey(Constant.DIACHI) ?? '';
+  }
+
+  // ✅ THÊM: Hàm tải và tạo các slot giờ trống
+  Future<void> fetchAndGenerateAvailableSlots() async {
+    displayableTimeSlots.clear(); // Xóa danh sách cũ
+    bookedStartTimesForSelectedDate.clear();
+
+    print(
+        '📡 Gọi API getlichtrungtamtheongay.php cho ngày: ${DateFormat('yyyy-MM-dd').format(selectedDate.value)}, centerId: $defaultCenterId');
+    try {
+      var response = await APICaller.getInstance().get(
+        "User/Lichhen/getlichtrungtamtheongay.php",
+        queryParams: {
+          "idtrungtam": defaultCenterId,
+          "ngayhen": DateFormat('yyyy-MM-dd').format(selectedDate.value),
+        },
+      );
+
+      if (response != null && response is List) {
+        List<TimeOfDay> fetchedTimes = [];
+        for (var item in response) {
+          if (item is Map && item.containsKey('thoigianhen')) {
+            String timeStr = item['thoigianhen'];
+            try {
+              TimeOfDay parsedTime;
+              if (RegExp(r'^[0-2]?[0-9]:[0-5][0-9]$').hasMatch(timeStr)) {
+                final parts = timeStr.split(':');
+                parsedTime = TimeOfDay(
+                    hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+              } else if (timeStr.contains('AM') || timeStr.contains('PM')) {
+                DateTime tempDate =
+                    DateFormat("h:mm a", "en_US").parse(timeStr);
+                parsedTime = TimeOfDay.fromDateTime(tempDate);
+              } else {
+                final parts = timeStr.split(':');
+                parsedTime = TimeOfDay(
+                    hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+              }
+              fetchedTimes.add(parsedTime);
+            } catch (e) {
+              print('❌ Lỗi parse thời gian từ API: "$timeStr" - $e');
+            }
+          }
+        }
+        bookedStartTimesForSelectedDate.assignAll(fetchedTimes);
+        print(
+            '🗓️ Các giờ đã đặt cho ngày ${selectedDate.value.toIso8601String().substring(0, 10)}: $bookedStartTimesForSelectedDate');
+      } else {
+        print(
+            'ℹ️ Không có giờ nào được đặt hoặc phản hồi API không hợp lệ cho getlichtrungtamtheongay.php. Response: $response');
+      }
+    } catch (e) {
+      print('❌ Lỗi khi tải các giờ đã đặt: $e');
+    }
+
+    List<TimeSlotDisplayInfo> newSlots = []; // Danh sách tạm thời
+    DateTime now = DateTime.now();
+    DateTime date = selectedDate.value;
+    TimeOfDay currentTimeSlot = openingTime;
+
+    while ((currentTimeSlot.hour < closingTime.hour) ||
+        (currentTimeSlot.hour == closingTime.hour &&
+            currentTimeSlot.minute < closingTime.minute)) {
+      bool isBooked = bookedStartTimesForSelectedDate.any((bookedTime) =>
+          bookedTime.hour == currentTimeSlot.hour &&
+          bookedTime.minute == currentTimeSlot.minute);
+
+      bool isPastSlotForToday = false;
+      if (date.year == now.year &&
+          date.month == now.month &&
+          date.day == now.day) {
+        DateTime currentSlotDateTime = DateTime(date.year, date.month, date.day,
+            currentTimeSlot.hour, currentTimeSlot.minute);
+        if (currentSlotDateTime
+            .isBefore(now.subtract(const Duration(seconds: 1)))) {
+          isPastSlotForToday = true;
+        }
+      }
+
+      newSlots.add(TimeSlotDisplayInfo(
+        time: currentTimeSlot,
+        isBooked: isBooked,
+        isPast: isPastSlotForToday,
+      ));
+
+      int currentTotalMinutes =
+          currentTimeSlot.hour * 60 + currentTimeSlot.minute;
+      int nextTotalMinutes = currentTotalMinutes + slotIncrementInMinutes;
+
+      if (nextTotalMinutes >= (closingTime.hour * 60 + closingTime.minute)) {
+        break;
+      }
+      if (nextTotalMinutes < 24 * 60) {
+        currentTimeSlot = TimeOfDay(
+            hour: nextTotalMinutes ~/ 60, minute: nextTotalMinutes % 60);
+      } else {
+        break;
+      }
+    }
+    displayableTimeSlots.assignAll(newSlots); // Cập nhật danh sách chính
+    print('🆕 Danh sách slot hiển thị: $displayableTimeSlots');
+
+    // Kiểm tra và reset selectedTime nếu nó không còn hợp lệ
+    if (selectedTime.value != null) {
+      final currentSelectedSlotInfo = displayableTimeSlots.firstWhereOrNull(
+          (info) =>
+              info.time.hour == selectedTime.value!.hour &&
+              info.time.minute == selectedTime.value!.minute);
+      if (currentSelectedSlotInfo == null ||
+          !currentSelectedSlotInfo.isSelectable) {
+        selectedTime.value = null;
+      }
+    }
+
+    if (displayableTimeSlots.where((s) => s.isSelectable).isEmpty) {
+      print(
+          '🚫 Không có giờ trống nào (có thể chọn) cho ngày ${DateFormat('dd/MM/yyyy').format(selectedDate.value)}');
+    }
   }
 
   // lấy tên thú cưng
@@ -99,16 +257,41 @@ class AppointmentController extends GetxController {
         return false;
       }
 
+      // Kiểm tra lại xem giờ đã chọn có thực sự hợp lệ không
+      final selectedSlotInfo = displayableTimeSlots.firstWhereOrNull((info) =>
+          info.time.hour == selectedTime.value!.hour &&
+          info.time.minute == selectedTime.value!.minute);
+
+      if (selectedSlotInfo == null || !selectedSlotInfo.isSelectable) {
+        Utils.showSnackBar(
+            title: 'Lỗi',
+            message:
+                'Giờ bạn chọn không còn trống hoặc không hợp lệ. Vui lòng chọn lại.',
+            duration: Duration(seconds: 4));
+        fetchAndGenerateAvailableSlots(); // Tải lại slot để người dùng thấy sự thay đổi (nếu có)
+        return false;
+      }
+
       var bookingData = {
         "idnguoidung": idUserInt,
         "idthucung": int.parse(selectedPet.value),
-        "idtrungtam": selectedCenter.value.isNotEmpty
-            ? int.parse(selectedCenter.value)
-            : 1,
+        "idtrungtam":
+            int.parse(defaultCenterId), // ✅ SỬA: Sử dụng defaultCenterId
         "ngayhen": DateFormat('yyyy-MM-dd').format(selectedDate.value),
-        "thoigianhen": selectedTime.value.format(Get.context!),
+        "thoigianhen":
+            selectedTime.value!.format(Get.context!), // Đã kiểm tra null ở trên
         "dichvu": selectedServiceIds.toList(),
       };
+      // var bookingData = {
+      //   "idnguoidung": idUserInt,
+      //   "idthucung": int.parse(selectedPet.value),
+      //   "idtrungtam": selectedCenter.value.isNotEmpty
+      //       ? int.parse(selectedCenter.value)
+      //       : 1,
+      //   "ngayhen": DateFormat('yyyy-MM-dd').format(selectedDate.value),
+      //   "thoigianhen": selectedTime.value.format(Get.context!),
+      //   "dichvu": selectedServiceIds.toList(),
+      // };
 
       print('📤 Dữ liệu gửi đi: $bookingData');
 
@@ -129,8 +312,8 @@ class AppointmentController extends GetxController {
             selectedDate.value.year,
             selectedDate.value.month,
             selectedDate.value.day,
-            selectedTime.value.hour,
-            selectedTime.value.minute,
+            selectedTime.value!.hour,
+            selectedTime.value!.minute,
           );
 
           String petName = getSelectedPetName();
@@ -190,7 +373,8 @@ class AppointmentController extends GetxController {
     selectedPet.value = '';
     selectedServiceIds.clear();
     selectedDate.value = DateTime.now();
-    selectedTime.value = TimeOfDay.now();
+    // selectedTime.value = TimeOfDay.now();
+    selectedTime.value = null;
   }
 
   Future<void> fetchAllAppointments() async {
@@ -289,7 +473,6 @@ class AppointmentController extends GetxController {
   }
 
   Future<void> fetchPrescriptionDetails(int idlichhen) async {
-    // --- DI CHUYỂN KHAI BÁO BIẾN RA ĐÂY ---
     const String userFriendlyNoPrescriptionMessage =
         "Lịch hẹn này không có đơn thuốc.";
     const String apiOriginalNoPrescriptionMessage =

@@ -11,6 +11,8 @@ class ServiceModalContent extends StatefulWidget {
   _ServiceModalContentState createState() => _ServiceModalContentState();
 }
 
+final TextEditingController _searchController = TextEditingController();
+
 class _ServiceModalContentState extends State<ServiceModalContent> {
   // Không cần _selectedServiceIds cục bộ nữa nếu bạn cập nhật trực tiếp AppointmentController
   final AppointmentController appointmentController =
@@ -37,6 +39,20 @@ class _ServiceModalContentState extends State<ServiceModalContent> {
           Text(
             'Chọn Dịch Vụ',
             style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Tìm kiếm dịch vụ...',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onChanged: (value) {
+              serviceController.filterServices(value); // gọi hàm lọc
+            },
           ),
           const SizedBox(height: 16),
           Expanded(

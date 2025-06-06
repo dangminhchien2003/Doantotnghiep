@@ -1,5 +1,6 @@
 import 'package:booking_petcare/Controller/Appointment/AppointmentController.dart';
 import 'package:booking_petcare/Utils/Utils.dart';
+import 'package:booking_petcare/View/Appointment/AppointmentDetail.dart';
 import 'package:booking_petcare/View/Booking/Booking.dart';
 import 'package:booking_petcare/View/Payment/Payment.dart';
 import 'package:booking_petcare/Widgets/PrescriptionModalContentWidget/PrescriptionModalContentWidget.dart';
@@ -355,7 +356,6 @@ class AppointmentList extends StatelessWidget {
                                                     ),
                                                     onPressed: () {
                                                       // 1. Gọi hàm fetchPrescriptionDetails để tải dữ liệu
-                                                      //    Hàm này sẽ tự động cập nhật selectedPrescription, isLoadingPrescription, prescriptionError
                                                       controller
                                                           .fetchPrescriptionDetails(
                                                               appointment
@@ -403,66 +403,128 @@ class AppointmentList extends StatelessWidget {
                               ],
                             ),
 
-                            const SizedBox(height: 12),
-
-                            // ACTIONS
-                            if (appointment.trangthai == 0)
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(Icons.cancel,
-                                      color: Colors.white),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    _showCancelConfirmation(
-                                        context, appointment.idlichhen);
-                                  },
-                                  label: const Text('Hủy lịch hẹn',
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                              ),
-                            if (appointment.trangthai == 3)
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(Icons.payment,
-                                      color: Colors.white),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.purple,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Get.to(() =>
-                                        Payment(appointment: appointment));
-                                  },
-                                  label: const Text('Thanh toán ngay',
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                              ),
-
                             const SizedBox(height: 5),
                             const Divider(thickness: 0.5, color: Colors.grey),
 
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Obx(() => TextButton.icon(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Obx(() {
+                                  final isExpanded =
+                                      appointment.isExpanded.value;
+                                  final String textLabel =
+                                      isExpanded ? 'Thu gọn' : 'Xem thêm';
+                                  final IconData iconData = isExpanded
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down;
+
+                                  return TextButton(
                                     onPressed: () {
                                       appointment.isExpanded.toggle();
                                     },
-                                    icon: Icon(appointment.isExpanded.value
-                                        ? Icons.keyboard_arrow_up
-                                        : Icons.keyboard_arrow_down),
-                                    label: Text(appointment.isExpanded.value
-                                        ? 'Thu gọn'
-                                        : 'Xem thêm'),
-                                  )),
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4, vertical: 4),
+                                      minimumSize: Size(0, 0),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text(textLabel),
+                                        SizedBox(width: 4.0),
+                                        Icon(
+                                          iconData,
+                                          size: 18.0,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withOpacity(0.1),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.blue,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.visibility,
+                                            color: Colors.blue, size: 16),
+                                        tooltip: 'Xem chi tiết lịch hẹn',
+                                        onPressed: () {
+                                          Get.to(() => AppointmentDetail(
+                                              appointment: appointment));
+                                        },
+                                        padding: EdgeInsets.zero,
+                                        alignment: Alignment.center,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+
+                                    // Nút Hủy
+                                    if (appointment.trangthai == 0)
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left:
+                                                0.0), // Giảm padding nếu muốn gần hơn
+                                        child: Tooltip(
+                                          message: 'Hủy lịch hẹn',
+                                          child: CircleAvatar(
+                                            radius:
+                                                16, // Kích thước icon button
+                                            backgroundColor: Colors.red,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.cancel,
+                                                  color: Colors.white,
+                                                  size: 16),
+                                              onPressed: () {
+                                                _showCancelConfirmation(context,
+                                                    appointment.idlichhen);
+                                              },
+                                              padding: EdgeInsets.zero,
+                                              constraints:
+                                                  const BoxConstraints(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    // Nút Thanh toán (chỉ icon) - hiển thị có điều kiện
+                                    if (appointment.trangthai == 3)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Tooltip(
+                                          message: 'Thanh toán ngay',
+                                          child: CircleAvatar(
+                                            radius: 16,
+                                            backgroundColor: Colors.purple,
+                                            child: IconButton(
+                                              icon: const Icon(Icons.payment,
+                                                  color: Colors.white,
+                                                  size: 16),
+                                              onPressed: () {
+                                                Get.to(() => Payment(
+                                                    appointment: appointment));
+                                              },
+                                              padding: EdgeInsets.zero,
+                                              constraints:
+                                                  const BoxConstraints(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -77,6 +77,7 @@ class Payment extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('Thanh toán lịch hẹn',
@@ -95,6 +96,7 @@ class Payment extends StatelessWidget {
                 children: [
                   _buildSectionTitle(context, 'Thông tin lịch hẹn'),
                   Card(
+                    color: Colors.white,
                     elevation: 1.5,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -191,6 +193,7 @@ class Payment extends StatelessWidget {
                   ),
                   _buildSectionTitle(context, 'Thông tin đơn thuốc (nếu có)'),
                   Card(
+                    color: Colors.white,
                     elevation: 1.5,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -377,7 +380,7 @@ class Payment extends StatelessWidget {
           top: 12.0,
           bottom: 16.0 + MediaQuery.of(context).padding.bottom),
       decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.25),

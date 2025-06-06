@@ -28,59 +28,63 @@ class ServiceDetails extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hình ảnh dịch vụ
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.network(
-                  service.imageUrl,
-                  width: double.infinity,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
+        child: Column(
+          children: [
+            // Hình ảnh dịch vụ
+            ClipRRect(
+              // borderRadius: BorderRadius.circular(15.0),
+              child: Image.network(
+                service.imageUrl,
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 16.0),
-              // Tên dịch vụ và giá
-              Text(
-                service.name,
-                style: const TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Tên dịch vụ và giá
+                  Text(
+                    service.name,
+                    style: const TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    'Giá: ${formattedPrice} VND',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.green,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  // Thời gian thực hiện dịch vụ
+                  Text(
+                    'Thời gian: ${service.duration}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  // Mô tả chi tiết dịch vụ
+                  Text(
+                    service.description.isNotEmpty
+                        ? service.description
+                        : 'Mô tả dịch vụ chưa có.',
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                  const SizedBox(height: 32.0),
+                ],
               ),
-              const SizedBox(height: 8.0),
-              Text(
-                'Giá: ${formattedPrice} VND',
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.green,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              // Thời gian thực hiện dịch vụ
-              Text(
-                'Thời gian: ${service.duration}',
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              // Mô tả chi tiết dịch vụ
-              Text(
-                service.description.isNotEmpty
-                    ? service.description
-                    : 'Mô tả dịch vụ chưa có.',
-                style: const TextStyle(fontSize: 16.0),
-              ),
-              const SizedBox(height: 32.0),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(

@@ -15,6 +15,11 @@ class PetsController extends GetxController {
       <PetModel>[].obs; // Danh sách sau khi lọc/tìm kiếm
   final RxBool isLoading = true.obs;
 
+  //Các biến cho việc hiển thị chi tiết một thú cưng ===
+  final Rx<PetModel?> selectedPetDetail = Rx<PetModel?>(null);
+  final RxBool isLoadingSelectedPetDetail = false.obs;
+  final RxString selectedPetDetailError = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -62,6 +67,91 @@ class PetsController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  //Hàm tải chi tiết một thú cưng bằng ID
+  // Hàm tải chi tiết một thú cưng bằng ID
+  Future<void> fetchPetDetailsById(int petId) async {
+    // Nhận petId kiểu int
+    if (petId == 0) {
+      // Giả sử 0 là ID không hợp lệ
+      selectedPetDetailError.value = "ID thú cưng không hợp lệ.";
+      selectedPetDetail.value = null;
+      isLoadingSelectedPetDetail.value = false;
+      return;
+    }
+    try {
+      isLoadingSelectedPetDetail.value = true;
+      selectedPetDetailError.value = ''; // Xóa lỗi cũ
+      selectedPetDetail.value = null; // Xóa dữ liệu cũ
+
+      // QUAN TRỌNG: Đảm bảo tên endpoint này ("User/Thucung/getdetailthucung.php")
+      // khớp CHÍNH XÁC với tên file PHP trên server của bạn.
+      // Dựa trên log lỗi của bạn, nó đang là "getdetailthucung.php".
+      // Nếu file PHP bạn tạo là "getthucungbyid.php", hãy sửa lại đây hoặc tên file trên server.
+      final String apiEndpoint =
+          "User/Thucung/getdetailthucung.php"; // HOẶC "User/Thucung/getthucungbyid.php"
+
+      debugPrint('📡 Gọi API $apiEndpoint cho ID: $petId');
+
+      // APICaller.get() sẽ trả về phần "data" nếu thành công, hoặc null nếu có lỗi (và đã hiện SnackBar)
+      var petDataFromCaller = await APICaller.getInstance().get(
+        apiEndpoint,
+        queryParams: {
+          "idthucung":
+              petId.toString() // API thường nhận ID dạng String trong query
+        },
+      );
+
+      if (petDataFromCaller != null) {
+        // Nếu petDataFromCaller không null, nó chính là phần "data" từ JSON response
+        if (petDataFromCaller is Map<String, dynamic>) {
+          // Kiểm tra xem Map có rỗng không, vì "data": {} cũng là JSON hợp lệ
+          if (petDataFromCaller.isNotEmpty) {
+            selectedPetDetail.value = PetModel.fromJson(petDataFromCaller);
+            debugPrint(
+                '🐶 Chi tiết thú cưng tải và parse thành công cho ID: $petId');
+          } else {
+            // API trả về {"error": {"code": 0, ...}, "data": {}}
+            selectedPetDetailError.value =
+                "Không tìm thấy thông tin chi tiết cho thú cưng này (dữ liệu trống từ API).";
+            debugPrint(
+                'ℹ️ API trả về "data" rỗng cho thú cưng ID: $petId. Response từ APICaller: $petDataFromCaller');
+          }
+        } else {
+          // Trường hợp APICaller.get() trả về "data" nhưng không phải là Map<String, dynamic>
+          // (ví dụ: trả về một List nếu API get by ID thiết kế sai)
+          selectedPetDetailError.value =
+              "Dữ liệu chi tiết thú cưng nhận được có định dạng không mong muốn.";
+          debugPrint(
+              '❌ Dữ liệu API (phần "data") không phải là Map cho ID: $petId. Kiểu dữ liệu thực tế: ${petDataFromCaller.runtimeType}, Dữ liệu: $petDataFromCaller');
+        }
+      } else {
+        // APICaller.get() đã trả về null, nghĩa là có lỗi xảy ra và APICaller đã hiển thị SnackBar.
+        // Bạn có thể muốn đặt một thông báo lỗi chung ở đây để UI có thể cập nhật nếu cần,
+        // hoặc để selectedPetDetailError trống vì SnackBar đã thông báo rồi.
+        // Đặt lỗi ở đây giúp UI (ví dụ BottomSheet) có thể hiển thị thông báo lỗi thay vì kẹt ở trạng thái loading hoặc hiển thị dữ liệu cũ.
+        selectedPetDetailError.value =
+            "Không thể tải chi tiết thú cưng. Vui lòng kiểm tra thông báo hoặc thử lại.";
+        debugPrint(
+            '❌ APICaller.get() trả về null cho ID: $petId. Lỗi có thể đã được hiển thị qua SnackBar bởi APICaller.');
+      }
+    } catch (e, stackTrace) {
+      // Bắt các lỗi ngoại lệ khác (ví dụ từ PetModel.fromJson nếu dữ liệu không đúng cấu trúc)
+      debugPrint(
+          '❌ Lỗi nghiêm trọng trong fetchPetDetailsById: $e\n$stackTrace');
+      selectedPetDetailError.value =
+          "Đã xảy ra lỗi khi xử lý thông tin thú cưng.";
+    } finally {
+      isLoadingSelectedPetDetail.value = false;
+    }
+  }
+
+// Hàm xóa chi tiết thú cưng đã chọn ===
+  void clearSelectedPetDetails() {
+    selectedPetDetail.value = null;
+    isLoadingSelectedPetDetail.value = false;
+    selectedPetDetailError.value = '';
   }
 
   // Hàm tìm kiếm thú cưng từ server

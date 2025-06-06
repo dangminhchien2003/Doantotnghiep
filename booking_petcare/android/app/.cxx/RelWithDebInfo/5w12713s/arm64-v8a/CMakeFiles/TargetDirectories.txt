@@ -1,0 +1,2 @@
+D:/du lieu cua chien/DoAnTotNghiep/booking_petcare/android/app/.cxx/RelWithDebInfo/5w12713s/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/du lieu cua chien/DoAnTotNghiep/booking_petcare/android/app/.cxx/RelWithDebInfo/5w12713s/arm64-v8a/CMakeFiles/rebuild_cache.dir

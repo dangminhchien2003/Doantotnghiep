@@ -4,6 +4,7 @@ import 'package:booking_petcare/Controller/Center/CenterController.dart';
 import 'package:booking_petcare/Controller/Pets/PetsController.dart';
 import 'package:booking_petcare/Controller/Services/ServiceController.dart';
 import 'package:booking_petcare/Utils/Utils.dart';
+import 'package:booking_petcare/View/Pets/AddPets.dart';
 import 'package:booking_petcare/Widgets/ServiceModal_Booking/ServiceModalContent.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,9 +86,39 @@ class Booking extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Chọn thú cưng
-              const Text(
-                "🐾 Chọn thú cưng",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment
+                    .center, // Căn giữa các item theo chiều dọc
+                children: [
+                  const Text(
+                    "🐾 Chọn thú cưng",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  TextButton.icon(
+                    icon: const Icon(Icons.add,
+                        size: 20, color: Colors.blue), // Icon dấu cộng
+                    label: const Text(
+                      "Thêm mới",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4), // Điều chỉnh padding cho nhỏ gọn
+                      minimumSize:
+                          Size.zero, // Cho phép nút co lại theo nội dung
+                      tapTargetSize: MaterialTapTargetSize
+                          .shrinkWrap, // Giảm vùng chạm thừa
+                    ),
+                    onPressed: () {
+                      Get.to(() => Addpets());
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Obx(() => Container(
@@ -182,7 +213,7 @@ class Booking extends StatelessWidget {
                         context: context,
                         initialDate: controller.selectedDate.value,
                         firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        lastDate: DateTime.now().add(const Duration(days: 14)),
                       );
                       if (picked != null) {
                         controller.selectedDate.value = picked;
@@ -209,98 +240,116 @@ class Booking extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Chọn giờ
+              //  Phần Chọn giờ - dùng Wrap các ChoiceChip
               const Text(
                 "⏰ Giờ hẹn",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(height: 8),
-              Obx(() => GestureDetector(
-                    onTap: () async {
-                      DateTime now = DateTime.now();
-                      DateTime selectedDate = controller
-                          .selectedDate.value; // Ngày đã chọn từ DatePicker
-
-                      TimeOfDay initialTimeForPicker =
-                          controller.selectedTime.value;
-                      bool isSelectedDateToday =
-                          selectedDate.year == now.year &&
-                              selectedDate.month == now.month &&
-                              selectedDate.day == now.day;
-
-                      if (isSelectedDateToday) {
-                        TimeOfDay currentTimeOfDay =
-                            TimeOfDay.fromDateTime(now);
-                        // Nếu giờ hiện tại trong controller đã là quá khứ so với giờ thực tế,
-                        // thì đặt initialTime cho picker là giờ thực tế
-                        if ((controller.selectedTime.value.hour <
-                                currentTimeOfDay.hour) ||
-                            (controller.selectedTime.value.hour ==
-                                    currentTimeOfDay.hour &&
-                                controller.selectedTime.value.minute <
-                                    currentTimeOfDay.minute)) {
-                          initialTimeForPicker = currentTimeOfDay;
-                        }
-                      }
-
-                      TimeOfDay? picked = await showTimePicker(
-                        context: context,
-                        initialTime:
-                            initialTimeForPicker, // Sử dụng initialTime đã được điều chỉnh
-                      );
-
-                      if (picked != null) {
-                        // Kiểm tra tính hợp lệ của giờ đã chọn
-                        if (isSelectedDateToday) {
-                          // Tạo đối tượng DateTime từ ngày đã chọn và giờ vừa pick
-                          DateTime pickedDateTime = DateTime(
-                            selectedDate.year,
-                            selectedDate.month,
-                            selectedDate.day,
-                            picked.hour,
-                            picked.minute,
-                          );
-
-                          // So sánh với thời điểm hiện tại (chỉ cần chính xác đến phút)
-                          // DateTime currentDateTimeForComparison = DateTime(now.year, now.month, now.day, now.hour, now.minute);
-                          // Thực ra so sánh trực tiếp với "now" là đủ, vì pickedDateTime đã bao gồm ngày
-                          // và chúng ta chỉ quan tâm khi isSelectedDateToday = true
-
-                          if (pickedDateTime.isBefore(now)) {
-                            // Nếu giờ đã chọn là trong quá khứ của ngày hôm nay
-
-                            Get.snackbar(
-                              'Giờ không hợp lệ',
-                              'Vui lòng chọn một giờ trong tương lai cho ngày hôm nay.',
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                            );
-
-                            return; // Không cập nhật giờ
-                          }
-                        }
-                        // Nếu hợp lệ (ngày tương lai, hoặc ngày hôm nay nhưng giờ hợp lệ)
-                        controller.selectedTime.value = picked;
-                      }
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.blue),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(controller.selectedTime.value.format(context)),
-                          const Icon(Icons.access_time, color: Colors.blue),
-                        ],
-                      ),
+              Obx(() {
+                if (controller.displayableTimeSlots.isEmpty) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.orange),
                     ),
-                  )),
+                    child: Text(
+                      controller.selectedDate.value.isBefore(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day))
+                          ? 'Vui lòng chọn ngày hiện tại hoặc tương lai.'
+                          : 'Không có khung giờ làm việc cho ngày này.',
+                      style: TextStyle(color: Colors.orange[700]),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+
+                bool hasAnySelectableSlots = controller.displayableTimeSlots
+                    .any((slot) => slot.isSelectable);
+
+                if (!hasAnySelectableSlots) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.orange),
+                    ),
+                    child: Text(
+                      'Tất cả các khung giờ cho ngày này đã được đặt hoặc đã qua. Vui lòng thử ngày khác.',
+                      style: TextStyle(color: Colors.orange[700]),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+
+                return Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: controller.displayableTimeSlots.map((slotInfo) {
+                    final TimeOfDay time = slotInfo.time;
+                    final bool isCurrentlySelected =
+                        controller.selectedTime.value?.hour == time.hour &&
+                            controller.selectedTime.value?.minute ==
+                                time.minute;
+                    final bool isSelectable = slotInfo.isSelectable;
+
+                    Color chipBackgroundColor;
+                    Color labelColor;
+                    TextDecoration labelDecoration = TextDecoration.none;
+                    BorderSide borderSide;
+                    String suffix = "";
+                    double elevation = 0;
+
+                    if (isCurrentlySelected && isSelectable) {
+                      chipBackgroundColor = Colors.blue;
+                      labelColor = Colors.white;
+                      borderSide = BorderSide(color: Colors.blue);
+                      elevation = 2;
+                    } else if (!isSelectable) {
+                      chipBackgroundColor = Colors.grey.shade300;
+                      labelColor = Colors.grey.shade500;
+                      labelDecoration = TextDecoration.lineThrough;
+                      borderSide = BorderSide(color: Colors.grey.shade300);
+                      if (slotInfo.isBooked) suffix = " (Đã đặt)";
+                    } else {
+                      chipBackgroundColor = Colors.grey[200]!;
+                      labelColor = Colors.black87;
+                      borderSide = BorderSide(color: Colors.grey.shade400);
+                    }
+
+                    return ChoiceChip(
+                      label: Text('${time.format(context)}$suffix'),
+                      selected: isCurrentlySelected && isSelectable,
+                      backgroundColor: chipBackgroundColor,
+                      selectedColor: Colors.blue,
+                      disabledColor: Colors.grey.shade300,
+                      labelStyle: TextStyle(
+                        color: labelColor,
+                        decoration: labelDecoration,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: borderSide,
+                      ),
+                      elevation: elevation,
+                      onSelected: (bool selectedValue) {
+                        if (isSelectable) {
+                          if (selectedValue) {
+                            controller.selectedTime.value = time;
+                          } else {}
+                        }
+                      },
+                    );
+                  }).toList(),
+                );
+              }),
 
               const SizedBox(height: 24),
 
@@ -331,8 +380,10 @@ class Booking extends StatelessWidget {
                               '🛁 Dịch vụ: ${controller.getSelectedServiceNames()}'),
                           Text(
                               '🗓️ Ngày: ${DateFormat('dd/MM/yyyy').format(controller.selectedDate.value)}'),
+                          // Text(
+                          //     '⏰ Giờ: ${controller.selectedTime.value.format(Get.context!)}'),
                           Text(
-                              '⏰ Giờ: ${controller.selectedTime.value.format(Get.context!)}'),
+                              '⏰ Giờ: ${controller.selectedTime.value != null ? controller.selectedTime.value!.format(context) : "Chưa chọn"}'),
                         ],
                       ),
                     ),
@@ -390,6 +441,7 @@ class Booking extends StatelessWidget {
 
                         if (success) {
                           await Future.delayed(const Duration(seconds: 2));
+                          controller.resetBookingForm();
                           Get.offNamed('/appointmentList');
                         }
                       }

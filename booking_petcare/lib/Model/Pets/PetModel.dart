@@ -5,7 +5,7 @@ class PetModel {
   final String loaithucung;
   final String giongloai;
   final int tuoi;
-  final int cannang;
+  final double cannang;
   final String suckhoe;
 
   PetModel({
@@ -27,7 +27,7 @@ class PetModel {
       loaithucung: json['loaithucung'] ?? '',
       giongloai: json['giongloai'] ?? '',
       tuoi: int.tryParse(json['tuoi'].toString()) ?? 0,
-      cannang: int.tryParse(json['cannang'].toString()) ?? 0,
+      cannang: double.tryParse(json['cannang'].toString()) ?? 0,
       suckhoe: json['suckhoe'] ?? '',
     );
   }

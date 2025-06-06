@@ -22,7 +22,7 @@ class PaymentController extends GetxController {
 
   final List<String> paymentMethods = ['Tiền mặt', 'Chuyển khoản', 'Vn Pay'];
   final String vnpayCreatePaymentUrl =
-      'https://a7e8-171-225-202-214.ngrok-free.app/API/User/Thanhtoan/create_payment_vnpay.php';
+      'https://1010-171-225-203-157.ngrok-free.app/API/User/Thanhtoan/create_payment_vnpay.php';
   // **** THÊM URL CHO API GHI NHẬN THANH TOÁN TIỀN MẶT ****
   final String recordCashPaymentUrl = '/User/Thanhtoan/record_cash_payment.php';
 

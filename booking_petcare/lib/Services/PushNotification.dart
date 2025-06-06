@@ -223,7 +223,7 @@ class PushNotifications {
       );
       print('fireTime $fireTime');
       if (fireTime.isAfter(now)) {
-        final label = dur.inMinutes >= 60 ? '1 giờ trước' : '20 phút trước';
+        final label = dur.inMinutes >= 60 ? '1 giờ trước' : '10 phút trước';
         final notiftieude = tieude;
         final notifnoidung = noidung ?? '$tieude ($label)';
 

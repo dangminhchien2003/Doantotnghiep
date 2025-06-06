@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class APICaller {
   static APICaller _apiCaller = APICaller();
-  final String BASE_URL = "http://192.168.2.251/api/";
+  final String BASE_URL = "http://192.168.171.66/api/";
 
   static APICaller getInstance() {
     if (_apiCaller == null) {
